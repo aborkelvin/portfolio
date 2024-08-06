@@ -2,7 +2,7 @@
 function MoreProject() {
     
     return (
-        <div className="bg-[#152026] p-5 md:p-6 flex flex-col min-w-[310px] max-w-[320px] lg:min-h-[300px] rounded" >
+        <div className="bg-[#152026] p-5 md:p-6 flex flex-col min-w-[280px] xphones:min-w-[310px] max-w-[320px] lg:min-h-[300px] rounded" >
             <div className="flex justify-between items-center mb-2" >
                 <img src="/javascript-js.svg" alt="JS Icon" className="w-[35px] h-[35px] rounded " />
                 <div className="flex items-center gap-3" >
