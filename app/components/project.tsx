@@ -1,35 +1,33 @@
 import Image from "next/image";
 
-function Project(props: any) {
+function Project({name,image,description,link,favImg}: {name: string, image: string, description: string, link: string,favImg?: string}) {
     
     return (
-        <div className="w-full h-fit md:h-[385px] max-w-full md:max-w-[90%] mx-auto bg-[#1f1f1f] 
-            flex flex-col-reverse md:gap-0 md:flex-row py-5 px-5 md:px-[30px] rounded-xl md:rounded-3xl "
+        <div className="w-full h-[400px] md:h-[500px] max-w-full lg:max-w-[90%] mx-auto bg-[#1f1f1f] 
+            flex flex-col-reverse gap-3 md:gap-4 p-3 md:p-5 md:px-[20px] rounded-xl "
         >
-            <div className="flex-1 text-white flex flex-col justify-between gap-2 ">
-                <div className="">
-                    <Image src="/jotie.svg" width={70} height={70} alt="Project" className="hidden md:block rounded-lg w-[30px] md:w-10 lg:w-[70px] mb-[10px] md:mb-[20px] object-cover " />
+            <div className="flex-1 text-white flex flex-col justify-between gap-4 ">
+                <div className="">                    
                     <h4 className="font-bold text-white text-xl md:text-2xl lg:text-[28px] mb-[5px] md:mb-[10px] " >
-                        Jotie - Notes & Tasks
+                        {name} 
                     </h4>
-                    <p className="text-sm md:text-base" >
-                        A simple and intuitive note-taking app that helps you stay organized and manage your tasks efficiently.
-                        Developed using Flutter, this app offers extensive customization options and robust functionality,
-                        embodying my personal innovation at Appceiv.
+                    <p className="text-sm md:text-base" >                        
+                        {description}
                     </p>
                 </div>
 
-                <button className="flex gap-2 text-sm md:text-base " >
-                    <span>Visit Site</span>
-                    <img src="/arrowright.svg" alt="Right arrow" className="w-5 h-5 " />
-                </button>
-
+                <a href={link} target="_blank">
+                    <button className="flex gap-2 text-sm md:text-base text-[#37b1da] " >
+                        <span>Visit Site</span>
+                        <img src="/arrowright2.svg" alt="Right arrow" className="w-5 h-5 " />                        
+                    </button>
+                </a>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 lg:max-h-[60%]">
                 <img
-                    src={props.image}
+                    src={image}
                     alt="Project"
-                    className="rounded-md md:rounded-lg mb-[20px] w-full h-full  "
+                    className="rounded-md md:rounded-lg w-full h-full max-h-[300px]  object-cover "
                 />
             </div>
         </div>
