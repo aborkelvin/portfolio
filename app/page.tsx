@@ -1,3 +1,6 @@
+"use client";
+
+import emailjs from 'emailjs-com';
 import Image from 'next/image'
 import Project from './components/project'
 import palbucks from "./public/palbucks.png"
@@ -5,9 +8,36 @@ import Link from 'next/link'
 //import talentsync from "./public/talentsync.png"
 import talentsync from "../public/talentsync.png"
 import ExtraProject from './components/ExtraProject'
+import { useState } from 'react'
 
 export default function Home() {
   
+  const [statusMessage, setStatusMessage] = useState('');
+
+  const sendEmail = (e:any) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        'service_vnlunn3', // Replace with EmailJS Service ID
+        'template_r4qjvtn', // Replace with EmailJS Template ID
+        e.target,
+        'wHIETtLS6MOpx_ret'      // Replace with EmailJS User ID
+      )
+      .then(
+        (result) => {
+          setStatusMessage('Message sent successfully!');
+          console.log(result.text);
+        },
+        (error) => {
+          setStatusMessage('Failed to send message. Please try again.');
+          console.error(error.text);
+        }
+      );
+
+    e.target.reset(); // Reset the form after submission
+  };
+
   return (
     <main className="min-h-screen  bg-[#191919] ">
       
@@ -88,7 +118,7 @@ export default function Home() {
           <p className='text-sm md:text-base leading-8'>
             Hello, I’m Abor Anthony, a passionate and dedicated web developer with a strong background in creating dynamic and responsive
             websites and web applications. With several years of experience in the industry,
-            I specialize in front-end development but also have an solid of back-end technologies.
+            I specialize in front-end development but also have a solid understanding of back-end technologies.
           </p>
 
           <div className="flex gap-3 ">
@@ -150,7 +180,7 @@ export default function Home() {
               description='A web app that enables users to raise
                 funds through both traditional currency and cryptocurrency. The platform serves
                 as the MVP for the Beevibe startup, streamlining the crowdfunding process.'
-              link='https://palbucks.co'
+              link='https://www.palbucks.co/'
               favImg='/palbucksFav.jpeg'
             />
             <Project
@@ -170,76 +200,86 @@ export default function Home() {
           <h3 className='text-[#bfc3ca] text-2xl md:text-3xl font-semibold mb-2 xphones:mb-3 md:mb-6 ' >
             More Projects
           </h3>
-          <div className="py-5 flex gap-5 md:gap-2 lg:gap-10 flex-wrap ">
-            {
-              extraProjects.map((project, index) => (
-                <ExtraProject
-                  key={index}
-                  name={project.name}
-                  description={project.description}
-                  live_link={project.live_link}
-                  github_link={project.github_link}
-                  tools={project.tools}
-                />
-              ))
-            }
+          <div className="py-5 grid gap-5 md:gap-6 lg:gap-10 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+            {extraProjects.map((project, index) => (
+              <ExtraProject
+                key={index}
+                name={project.name}
+                description={project.description}
+                live_link={project.live_link}
+                github_link={project.github_link}
+                tools={project.tools}
+              />
+            ))}
           </div>
+
         </div>
 
         {/* ******************** Contact Me ******************** */}
-        <div id='contact' className='py-10' >
-          <h3 className='text-[#bfc3ca] text-2xl md:text-3xl font-semibold mb-6 ' >
-            Contact Me
-          </h3>
-          <div>
-
-            <form action="" className='flex flex-col gap-5 md:gap-6 border-[#0094c6] border-[1px] rounded px-5 py-5 md:py-8 mx-auto w-full max-w-[500px] ' >
-              <div >
-                <label htmlFor="name" className='text-[#bfc3ca] text-sm mb-1' >Name *</label>
-                <input
-                  type="text"
-                  id='name'
-                  placeholder='Full Name'
-                  className='outline-none bg-[#2a2a2a] text-[#bfc3ca] w-full py-3 px-3 rounded-md text-sm'
-                />
-              </div>
-              <div >
-                <label htmlFor="email" className='text-[#bfc3ca] text-sm mb-1' >Email *</label>
-                <input
-                  type="email"
-                  id='Email'
-                  placeholder='Email adress'
-                  className='outline-none bg-[#2a2a2a] text-[#bfc3ca] w-full py-3 px-3 rounded-md text-sm'
-                />
-              </div>
-              <div >
-                <label htmlFor="message" className='text-[#bfc3ca] text-sm mb-1' >Message *</label>
-                <textarea                  
-                  id='message'
-                  placeholder='Type your message here...'
-                  className='outline-none bg-[#2a2a2a] text-[#bfc3ca] w-full py-4 px-3 rounded-md text-sm'
-                  rows={4}
-
-                />
-              </div>
-              <button className='w-full border-[1px] border-[#0094c6] text-[#bfc3ca] py-2 rounded text-sm md:text-base ' >
-                Send
-              </button>
-
-              <p className='text-center text-[#bfc3ca] font-semibold' >OR</p>
-              <div className="text-sm md:text-base">
-                <p className='text-[#bfc3ca] mb-1' > CALL: +234 803 6310 553 </p>
-                <p className='text-[#bfc3ca]' >SAY HI: ABORKELVIN@GMAIL.COM </p>
-              </div>
-              {/* <div className='flex -mt-5 gap-8 items-center ' >
-                <img src="/twitter.svg" alt="My twitter: x.com/kel_savio" className='w-10 h-10 cursor-pointer ' />
-                <img src="/linkedin.svg" alt="My twitter: x.com/kel_savio" className='w-8 h-8 cursor-pointer ' />
-                <img src="/github3.svg" alt="My twitter: x.com/kel_savio" className='w-8 h-8 ' />
-              </div> */}
-            </form>
-          </div>
-
+        <div id='contact' className='py-10'>
+      <h3 className='text-[#bfc3ca] text-2xl md:text-3xl font-semibold mb-6'>
+        Contact Me
+      </h3>
+      <form
+        onSubmit={sendEmail}
+        className='flex flex-col gap-5 md:gap-6 border-[#0094c6] border-[1px] rounded px-5 py-5 md:py-8 mx-auto w-full max-w-[500px]'
+      >
+        <div>
+          <label htmlFor="from_name" className='text-[#bfc3ca] text-sm mb-1'>
+            Name *
+          </label>
+          <input
+            type="text"
+            name="from_name"
+            placeholder="Full Name"
+            className='outline-none bg-[#2a2a2a] text-[#bfc3ca] w-full py-3 px-3 rounded-md text-sm'
+            required
+          />
         </div>
+        <input type="text" name="to_name" value="Anthony" sr-only className='hidden' />
+        <div>
+          <label htmlFor="email" className='text-[#bfc3ca] text-sm mb-1'>
+            Email *
+          </label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            className='outline-none bg-[#2a2a2a] text-[#bfc3ca] w-full py-3 px-3 rounded-md text-sm'
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="message" className='text-[#bfc3ca] text-sm mb-1'>
+            Message *
+          </label>
+          <textarea
+            name="message"
+            placeholder="Type your message here..."
+            className='outline-none bg-[#2a2a2a] text-[#bfc3ca] w-full py-4 px-3 rounded-md text-sm'
+            rows={4}
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          className='w-full border-[1px] border-[#0094c6] text-[#bfc3ca] py-2 rounded text-sm md:text-base'
+        >
+          Send
+        </button>
+        {statusMessage && (
+          <p className='text-center text-[#bfc3ca] font-semibold mt-4'>
+            {statusMessage}
+          </p>
+        )}
+        <p className='text-center text-[#bfc3ca] font-semibold' >OR</p>
+        <div className="text-sm md:text-base">
+          <p className='text-[#bfc3ca] mb-1' > CALL: +234 803 6310 553 </p>
+          <p className='text-[#bfc3ca]' >SAY HI: <a href="mailto:aborkelvin@gmail.com">aborkelvin@gmail.com</a> </p>
+        </div>
+      </form>
+      
+    </div>
 
 
       </div>
@@ -260,16 +300,30 @@ const extraProjects = [
     tools: ["React.js", "Typescript", "Tailwind CSS"]
   },
   {
-    name: "Exclusive commerce",
+    name: "Exclusive commerce (In progress)",
     description: "An e-commerce platform that allows users to buy and sell exclusive products and services.",
     live_link: "https://ecommerce-site-orcin.vercel.app/",
     github_link: "https://github.com/aborkelvin/ecommerce-site",
     tools: ["Next.js", "Tailwind CSS", "Typescript"]
+  },  
+  {
+    name: "Clare Jitu Portfolio",
+    description: "A portfolio website for a Nigerian based UI/UX creative / designer",
+    live_link: "https://clare-jitu.vercel.app/",
+    github_link: "https://github.com/aborkelvin/jitu-portfolio",
+    tools: ["Next.js", "Tailwind CSS", "Typescript"]
   },
   {
-    name: "Learnerflex",
+    name: "Learnerflex (In progress)",
     description: "An affiliate marketing platform that connects learners with educators, enabling them to earn commissions for promoting courses.",
-    live_link: "https://learnerflex.vercel.app/",
+    live_link: "https://learnerflex.com",
     tools: ["React.js","Tailwind CSS", "Typescript"]
+  },
+  {
+    name: "Rest Countries",
+    description: "A web app that displays information about countries, including their population, languages, and currencies.",
+    live_link: "https://restcountries-psi.vercel.app/",
+    tools: ["React.js", "Tailwind CSS"],
+    github_link: "https://github.com/aborkelvin/Restcountries"
   }
 ]
